@@ -1,2 +1,8 @@
-# python-stem-portfolio
-Python programming portfolio - Bishop's Stortford College STEM course
+**Name:** Lara Dee
+**School:** Bishop's Stortford College  
+**Course:** Python for STEM  
+**Year:** Year 12, 2025-26
+
+## About Me
+
+[]
