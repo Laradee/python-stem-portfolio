@@ -55,7 +55,11 @@ This portfolio documents my progress through a Python programming course designe
 
 ## Unit converter
 
-**Desription**
+**Description**
+
+I made this unit converter which can convert kilometers to miles, miles to kilometers, Celcius to Fahrenheit, and Fahrenheit to degrees. This was quite a simple code as only required some calculations and basic code.
+
+**Code**
 
 ```python
 def km_to_miles(km):
@@ -106,3 +110,7 @@ def main():
         print(f"{fan} fahrenheit = {result:.2f} celsius")
         
 main()```
+
+
+
+
