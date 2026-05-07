@@ -117,7 +117,7 @@ screenshot
 ## Guessing number game
 
 **Description**
-
+Game to guess numbers between 1 and 100, 
 **Code**
 ```python
 import random
@@ -157,9 +157,10 @@ screenshot
 ## To do list
 
 **Description**
+Code to View taks, add tasks, remove tasks, mark tasks as done, and to quit
 
 **Code**
-```phython
+```python
 def show_tasks(tasks):
     """Display all tasks with their numbers."""
     if len(tasks) == 0:
@@ -188,6 +189,15 @@ def remove_task(tasks):
     else:
         print("Invalid number.")
 
+def task_done(tasks):
+    show_tasks(tasks)
+    number = int(input("Enter task to mark as done: "))
+    if 1 <= number <= len(tasks):
+        tasks[number-1]= "Done: "+tasks[number-1]
+        print(tasks[number-1])
+    else:
+        print("Invalid number.")
+
 def main():
     tasks = []
     
@@ -196,7 +206,8 @@ def main():
         print("1. View tasks")
         print("2. Add task")
         print("3. Remove task")
-        print("4. Quit")
+        print("4. Mark as Done")
+        print("5. Quit")
         
         choice = input("Choose: ")
         
@@ -207,8 +218,12 @@ def main():
         elif choice == "3":
             remove_task(tasks)
         elif choice == "4":
+            task_done(tasks)
+        else:
             print("Goodbye!")
             break
 
 main()
 ```
+
+
