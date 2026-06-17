@@ -5,7 +5,7 @@
 
 ## About Me
 
-I'm a year 12 student who is maintaining A*,A*,A and taking Maths, Further Maths, physics and DT. I hope to study Engineering at University, and I am intrested in bridges and space.
+I'm a year 12 student who is maintaining A*,A*,A,A and taking Maths, physics, further maths and DT. I hope to study Engineering at University, and I am intrested in bridges and space.
 
 ## Course Overview
 
@@ -225,5 +225,262 @@ def main():
 
 main()
 ```
+## Student grade calculator
+
+**Description**
+Code to store students scores and allow new scores to be added
+
+**Code**
+```python
+def get_grade(average):
+    """Return a letter grade based on average percentage."""
+    if average >= 70:
+        return "A"
+    elif average >= 60:
+        return "B"
+    elif average >= 50:
+        return "C"
+    elif average >= 40:
+        return "D"
+    else:
+        return "U"
+
+def get_valid_score(subject):
+    """Ask for a score and keep asking until a valid number is entered."""
+    while True:
+        try:
+            score = float(input(f"Enter score for {subject} (0-100): "))
+            if 0 <= score <= 100:
+                return score
+            else:
+                print("Score must be between 0 and 100.")
+        except ValueError:
+            print("Please enter a number.")
+def calculate_results():
+    """Collect scores and display results."""
+    name = input("Student name: ")
+    subjects = ["Maths", "English", "Science"]
+    scores = {}
+    
+    for subject in subjects:
+        scores[subject] = get_valid_score(subject)
+    
+    average = sum(scores.values()) / len(scores)
+    grade = get_grade(average)
+    
+    print(f"\n=== Results for {name} ===")
+    for subject, score in scores.items():
+        print(f"  {subject}: {score:.1f}")
+    print(f"Average: {average:.1f}%")
+    print(f"Grade: {grade}")
+
+while True:
+    calculate_results()
+    doagain = input("add another student(Y/N): ")
+    if doagain =="Y":
+        continue
+    else: break
+
+    
+calculate_results()
+
+def other_students():
+    """add other students to list."""
+    students = input("would you like to add another student: ")
+    if students == 'yes':
+        calucate_results()
+```
+
+## OPP Bank
+
+**Description**
+Code to create account holder, enter funds and impliment intrest
+
+**Code**
+```python
+def __init__(self, owner, initial_balance=0):
+    """Set up the account with an owner name and starting balance."""
+    self.owner = owner
+    self.balance = initial_balance
+    self.transactions = []
+
+def deposit(self, amount):
+    """Add money to the account."""
+    if amount > 0:
+        self.balance += amount
+        self.transactions.append(f"Deposit: +£{amount:.2f}")
+        print(f"Deposited £{amount:.2f}. New balance: £{self.balance:.2f}")
+    else:
+        print("Deposit amount must be positive.")
+
+def withdraw(self, amount):
+    """Remove money from the account if funds are available."""
+    if amount <= 0:
+        print("Withdrawal amount must be positive.")
+    elif amount > self.balance:
+        print(f"Insufficient funds. Balance is only £{self.balance:.2f}")
+    else:
+        self.balance -= amount
+        self.transactions.append(f"Withdrawal: -£{amount:.2f}")
+        print(f"Withdrew £{amount:.2f}. New balance: £{self.balance:.2f}")
+
+def show_balance(self):
+    """Display the current balance."""
+    print(f"\nAccount holder: {self.owner}")
+    print(f"Current balance: £{self.balance:.2f}")
+
+def GetBalance(self):
+    return self.balance
+
+def show_history(self):
+    """Display all transactions."""
+    print(f"\n=== Transaction History for {self.owner} ===")
+    for t in self.transactions:
+        print(f"  {t}")
+    print(f"  Current balance: £{self.balance:.2f}")
+
+#I noticed you have written def instead of class      
+class SavingsAccount(BankAccount):
+# we need to add a constructor so the rate can be added
+def __init__(self, owner, initial_balance=0, rate =0.0):
+    super().__init__(owner, initial_balance) # calls the contructor of the parent class i.e. BankAccount
+    #set the rate
+    self.rate = rate
+
+def apply_interest(self):
+    interest = self.balance * self.rate
+    self.balance = self.balance + interest
+    self.transactions.append(f"Interest ({self.rate:.1%}): +£{interest:.2f}")
+    print(f"Interest applied: +£{interest:.2f}. New balance: £{self.balance:.2f}")
+
+#added a little helper to ensure that user enters a number before proceeding
+def validateInput(prompt):
+'''Keep asking until the user enters a valid number.'''
+while True:
+    try:
+        return float(input(prompt))
+    except ValueError:
+        print("Please enter a floating point number")
+
+# --- Using the class ---
+def main():
+name = input("Enter account holder name: ")
+opening = validateInput("Enter opening balance: £")
+rate = validateInput('Enter annual Interest rate (e.g. 0.03 for 3%): ')
+
+#We create one object - a saving account is a type of bank account
+account = SavingsAccount(name, opening, rate)
+
+while True:
+    print("\n1. Deposit")
+    print("2. Withdraw")
+    print("3. Check balance")
+    print("4. View history")
+    print("5. Apply Interest")
+    print("6. Exit")
+
+    choice = input("Choose: ")
+
+    if choice == "1":
+        amount = float(input("Amount to deposit: £"))
+        account.deposit(amount)
+    elif choice == "2":
+        amount = float(input("Amount to withdraw: £"))
+        account.withdraw(amount)
+    elif choice == "3":
+        account.show_balance()
+    elif choice == "4":
+        account.show_history()
+    elif choice =="5":
+        account.apply_interest()
+    elif choice == "6":
+        print("Thank you for banking with us.")
+        break
+    else:
+        print("Invalid choice.  Please pick 1-6")
+```
+
+ ## Student Records database
+
+**Description**
+Code to view, add and search for students scores
+
+**Code**
+```python 
+import sqlite3
+
+def create_database():
+    """Create the database and table if they don't exist."""
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS students (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            score REAL NOT NULL
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def add_student(name, score):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO students (name, score) VALUES (?, ?)", (name, score))
+    conn.commit()
+    conn.close()
+    print(f"Added {name} with score {score}.")
+
+def view_all_students():
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, score FROM students ORDER BY score DESC")
+    rows = cursor.fetchall()
+    conn.close()
+    
+    if not rows:
+        print("No records found.")
+        return
+    print("\n=== All Students ===")
+    print(f"{'ID':<5} {'Name':<20} {'Score':<10}")
+    print("-" * 35)
+    for row in rows:
+        print(f"{row[0]:<5} {row[1]:<20} {row[2]:<10}")
+
+def search_student(name):
+    conn = sqlite3.connect("students.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM students WHERE name LIKE ?", (f"%{name}%",))
+    results = cursor.fetchall()
+    conn.close()
+    
+    if not results:
+        print(f"No student found with name '{name}'.")
+    else:
+        for r in results:
+            print(f"ID: {r[0]}, Name: {r[1]}, Score: {r[2]}")
+
+def main():
+    create_database()
+    
+    while True:
+        print("\n=== Student Records ===")
+        print("1. View all  2. Add student  3. Search  4. Exit")
+        choice = input("Choose: ")
+        
+        if choice == "1":
+            view_all_students()
+        elif choice == "2":
+            name = input("Name: ")
+            score = float(input("Score: "))
+            add_student(name, score)
+        elif choice == "3":
+            name = input("Search name: ")
+            search_student(name)
+        elif choice == "4":
+            break
+
+main()
+```  
 
 
